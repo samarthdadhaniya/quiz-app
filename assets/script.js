@@ -1,106 +1,104 @@
-// Quiz data
 const quizData = [
     {
-        question: "Question 1: What is the capital of France?",
-        options: ["Paris", "Berlin", "Rome", "Madrid"],
-        answer: "Paris"
+        question: "What is the capital of France?",
+        options: ["Paris", "London", "Rome", "Madrid"],
+        answer: 0
     },
     {
-        question: "Question 2: Who painted the Mona Lisa?",
-        options: ["Michelangelo", "Leonardo da Vinci", "Pablo Picasso", "Vincent van Gogh"],
-        answer: "Leonardo da Vinci"
+        question: "Which planet is known as the Red Planet?",
+        options: ["Venus", "Mars", "Jupiter", "Saturn"],
+        answer: 1
     },
-    // Add more questions here...
+    {
+        question: "Who painted the Mona Lisa?",
+        options: ["Vincent van Gogh", "Leonardo da Vinci", "Pablo Picasso", "Michelangelo"],
+        answer: 1
+    }
 ];
 
-// Initialize variables
-let currentQuestion = 0;
-let marks = 0;
+const quizContainer = document.getElementById("quiz");
+const submitButton = document.getElementById("submitBtn");
+const resultsContainer = document.getElementById("results");
 
-// Display the current question and options
-function displayQuestion() {
-    const quizContainer = document.getElementById("quiz-container");
-    const question = quizData[currentQuestion].question;
-    const options = quizData[currentQuestion].options;
-
-    let quizHTML = `<h3>${question}</h3>`;
-
-    options.forEach((option, index) => {
-        quizHTML += `<label><input type="radio" name="answer${currentQuestion}" value="${option}">${option}</label><br>`;
+function buildQuiz() {
+    quizData.forEach((questionData, index) => {
+      const questionElem = document.createElement("div");
+      questionElem.classList.add("question");
+      questionElem.innerHTML = `
+        <h3>${index + 1}. ${questionData.question}</h3>
+        <div class="options">
+          ${questionData.options
+            .map(
+              (option, optionIndex) =>
+                `<label>
+                   <input type="radio" class="options" name="question${index}" value="${optionIndex}">
+                   ${option}
+                 </label>`
+            )
+            .join("")}
+        </div>
+      `;
+      quizContainer.appendChild(questionElem);
     });
+  }
+  
 
-    quizContainer.innerHTML = quizHTML;
-}
+// Inside the showResults() function, update the code as follows
 
-// Calculate the quiz result
-function calculateResult() {
-    quizData.forEach((quiz, index) => {
-        const answers = document.getElementsByName(`answer${index}`);
-        const selectedOption = Array.from(answers).find(answer => answer.checked);
+function showResults() {
+    const answerElems = quizContainer.querySelectorAll("input:checked");
+    let score = 0;
 
-        if (selectedOption) {
-            const selectedAnswer = selectedOption.value;
-            if (selectedAnswer === quiz.answer) {
-                marks++;
-                selectedOption.parentElement.classList.add("correct");
-            } else {
-                selectedOption.parentElement.classList.add("wrong");
+    answerElems.forEach((answerElem, index) => {
+        const questionData = quizData[index];
+        const selectedOption = parseInt(answerElem.value);
+        const questionElem = quizContainer.querySelector(`.question:nth-child(${index + 1})`);
+
+        const optionLabels = questionElem.querySelectorAll("label");
+
+        optionLabels.forEach((optionLabel, optionIndex) => {
+            if (optionIndex === questionData.answer) {
+                optionLabel.classList.add("correct");
+            } else if (optionIndex === selectedOption) {
+                optionLabel.classList.add("incorrect");
             }
+        });
+
+        if (selectedOption === questionData.answer) {
+            score++;
         }
     });
-}
-
-// Display the quiz result
-function displayResult() {
-    const resultContainer = document.getElementById("result-container");
-    const resultModal = document.getElementById("result-modal");
-    const closeButton = document.getElementsByClassName("close")[0];
-    const marksElement = document.getElementById("marks");
-    const percentageElement = document.getElementById("percentage");
-    const gradeElement = document.getElementById("grade");
 
     const totalQuestions = quizData.length;
-    const percentage = (marks / totalQuestions) * 100;
-    let grade;
+    const percentage = (score / totalQuestions) * 100;
 
-    if (percentage >= 80) {
-        grade = "A";
-    } else if (percentage >= 60) {
-        grade = "B";
-    } else if (percentage >= 40) {
-        grade = "C";
-    } else {
-        grade = "F";
-    }
+    resultsContainer.innerHTML = `
+      <h2>Quiz Results</h2>
+      <p>Score: ${score}/${totalQuestions}</p>
+      <p>Grade: ${getGrade(percentage)}</p>
+      <p>Percentage: ${percentage}%</p>
+    `;
 
-    marksElement.innerText = `Marks: ${marks}/${totalQuestions}`;
-    percentageElement.innerText = `Percentage: ${percentage}%`;
-    gradeElement.innerText = `Grade: ${grade}`;
-
-    resultContainer.style.display = "block";
-    resultModal.style.display = "block";
-
-    closeButton.onclick = function() {
-        resultContainer.style.display = "none";
-        resultModal.style.display = "none";
-    };
-
-    window.onclick = function(event) {
-        if (event.target === resultModal) {
-            resultContainer.style.display = "none";
-            resultModal.style.display = "none";
-        }
-    };
+    resultsContainer.style.display = "block";
 }
 
-// Load the quiz on page load
-window.onload = function() {
-    displayQuestion();
-    const submitButton = document.getElementById("submit-button");
-    submitButton.style.display = "block";
-    submitButton.addEventListener("click", function() {
-        calculateResult();
-        submitButton.style.display = "none";
-        displayResult();
-    });
-};
+
+
+
+function getGrade(percentage) {
+    if (percentage >= 90) {
+        return "A";
+    } else if (percentage >= 80) {
+        return "B";
+    } else if (percentage >= 70) {
+        return "C";
+    } else if (percentage >= 60) {
+        return "D";
+    } else {
+        return "F";
+    }
+}
+
+buildQuiz();
+
+submitButton.addEventListener("click", showResults);
