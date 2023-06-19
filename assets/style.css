@@ -1,67 +1,212 @@
-body {
-    font-family: Arial, sans-serif;
-    padding: 20px;
-  }
-  
-  h1 {
-    text-align: center;
-  }
-  
-  #quiz {
-    margin-bottom: 20px;
-  }
-  
-  #submitBtn {
-    display: block;
-    margin: 0 auto;
-  }
-  
-  #results {
-    display: none;
-    margin-top: 20px;
-    text-align: center;
-  }
-  
-  /* Add the following styles */
-  
-  .question .selected {
-    font-weight: bold;
-  }
-  
-  .feedback {
-    margin-top: 10px;
-    font-weight: bold;
-  }
-  
-  .selected-options {
-    margin-top: 5px;
-    font-weight: bold;
-  }
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;400;500;600;700&display=swap');
 
-/* Update the following styles */
+* {
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+}
+
+body
+{
+    background-color: #1c435b;
+}
+
+.container {
+    width: 75rem;
+    margin: 0 auto;
+    padding: 17px;
+    background-color: #f8f9fa;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.mainTitle {
+    text-align: center;
+    margin-bottom: 30px;
+    text-transform: uppercase;
+    padding: 10px;
+    color: #ffffff;
+    background-color: #1c435b;
+}
+
+.feedback-section {
+    display: none;
+    margin-top: 30px;
+}
+
+.question, .question-feedback {
+    background-color: rgb(243, 243, 243);
+    margin-bottom: 20px;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0.5px 0.5px 10px rgb(206, 206, 206) inset;
+}
+
+.options label, input
+{
+    flex-direction: column;
+    font-weight: 400;
+}
+
+.questionNumber
+{
+    font-weight: 400;
+    font-size: 15px;
+}
+
+.mainQuestion {
+    font-size: 20px;
+    font-weight: 600;
+}
+
+#quiz-results {
+    margin-top: 20px;
+}
+
+#result-btn {
+    margin-top: 20px;
+    width: 240px;
+    border-radius: 7px;
+    text-transform: uppercase;
+    border: 3px solid #1c435b;
+    background-color: white;
+    color: #1c435b;
+}
+
+#result-btn:hover {
+    background-color: #1c435b;
+    color: white;
+    transition: 0.3s;
+}
+
+#submit-btn {
+    margin-top: 20px;
+    width: 200px;
+    border-radius: 7px;
+    text-transform: uppercase;
+    border: 3px solid #1c435b;
+    background-color: white;
+    color: #1c435b;
+}
+
+#submit-btn:hover {
+    background-color: #1c435b;
+    color: white;
+    transition: 0.3s;
+}
+
+.modal-title {
+    text-align: center;
+}
+
+#score,
+#grade,
+#percentage {
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+.modal-dialog {
+    max-width: 400px;
+}
 
 .options {
-    display: flex;
-    flex-direction: column;
-  }
-  
-/* Update the following styles */
+    margin-top: 20px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 10px;
+}
 
-.options label {
+.option {
     display: flex;
     align-items: center;
-    margin-bottom: 5px;
+}
+
+input[type="radio"] {
+    margin-right: 10px;
+}
+
+label {
+    margin-bottom: 0;
+    color: #333;
+    font-weight: bold;
+}
+
+.correct {
+    color: #18d100;
+    font-weight: 600;
+}
+
+.incorrect {
+    color: #dc3545;
+    font-weight: 600;
+}
+
+.btn {
+    margin-top: 20px;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.btn:hover {
+    background-color: #0056b3;
+}
+
+.modal-content {
+    border-radius: 7px;
+  }
+
+  .modal-header {
+    background-color: #ffffff;
+    box-shadow: 0px 2px 4px #e0e0e0ca;
+    text-align: center;
+  }
+
+  .modal-title {
+    font-weight: bold;
+    text-align: center;
+  }
+
+  .modal-body {
+    text-align: center;
+
+  }
+
+  #score,
+  #grade,
+  #percentage {
+    margin-bottom: 15px;
+  }
+
+  .btn-close {
+    color: #000;
+  }
+
+
+/* indicate labels */
+  .feedback-label {
+    display: inline-block;
+    margin-left: 8px;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-weight: bold;
+    font-size: 12px;
   }
   
-  .options label input[type="radio"] {
-    margin-right: 5px;
+  .incorrect-label {
+    background-color: #ff5a5a;
+    color: white;
   }
   
-  .correct {
-    color: green;
-  }
-  
-  .incorrect {
-    color: red;
+  .correct-label {
+    background-color: #63c363;
+    color: white;
   }
   
